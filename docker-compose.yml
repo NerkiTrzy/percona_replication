@@ -1,0 +1,34 @@
+version: '2'
+services:
+  db-master:
+    image: artifactory.lppdev.pl/docker-registry/percona:5.7-centos
+    container_name: db-master
+    ports:
+      - "8095:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_REPLICATION_ROLE=master
+      - MYSQL_USER=ist
+      - MYSQL_PASSWORD=ist
+    volumes:
+      - ./percona/master/config-file.cnf:/etc/mysql/conf.d/master.cnf
+      - ./percona/master/data/:/var/lib/mysql/
+  db-slave:
+    image: artifactory.lppdev.pl/docker-registry/percona:5.7-centos
+    container_name: db-slave
+    ports:
+      - "8096:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_REPLICATION_ROLE=slave
+      - MYSQL_USER=ist
+      - MYSQL_PASSWORD=ist
+    volumes:
+      - ./percona/slave/config-file.cnf:/etc/mysql/conf.d/slave.cnf
+      - ./percona/slave/data/:/var/lib/mysql/
+
+networks:
+  percona_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
