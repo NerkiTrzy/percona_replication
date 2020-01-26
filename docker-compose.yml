@@ -1,7 +1,7 @@
 version: '2'
 services:
   db-master:
-    image: artifactory.lppdev.pl/docker-registry/percona:5.7-centos
+    image: percona:5.7-centos
     container_name: db-master
     ports:
       - "8095:3306"
@@ -14,7 +14,7 @@ services:
       - ./percona/master/config-file.cnf:/etc/mysql/conf.d/master.cnf
       - ./percona/master/data/:/var/lib/mysql/
   db-slave:
-    image: artifactory.lppdev.pl/docker-registry/percona:5.7-centos
+    image: percona:5.7-centos
     container_name: db-slave
     ports:
       - "8096:3306"
