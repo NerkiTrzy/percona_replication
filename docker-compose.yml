@@ -12,7 +12,7 @@ services:
       - MYSQL_USER=ist
       - MYSQL_PASSWORD=ist
     volumes:
-      - ./percona/master/config-file.cnf:/etc/my.cnf.d/my.cnf
+      - ./percona/master/config-file.cnf:/etc/mysql/my.cnf
       - ./percona/master/data/:/var/lib/mysql/
     networks:
       percona_net:
@@ -28,7 +28,7 @@ services:
       - MYSQL_USER=ist
       - MYSQL_PASSWORD=ist
     volumes:
-      - ./percona/slave/config-file.cnf:/etc/my.cnf.d/my.cnf
+      - ./percona/slave/config-file.cnf:/etc/mysql/my.cnf
       - ./percona/slave/data/:/var/lib/mysql/
     networks:
       percona_net:
