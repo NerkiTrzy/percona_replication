@@ -7,12 +7,16 @@ services:
       - "8095:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=test
       - MYSQL_REPLICATION_ROLE=master
       - MYSQL_USER=ist
       - MYSQL_PASSWORD=ist
     volumes:
-      - ./percona/master/config-file.cnf:/etc/mysql/conf.d/master.cnf
+      - ./percona/master/config-file.cnf:/etc/my.cnf.d/my.cnf
       - ./percona/master/data/:/var/lib/mysql/
+    networks:
+      percona_net:
+        ipv4_address: 10.5.0.2
   db-slave:
     image: percona:5.7-centos
     container_name: db-slave
@@ -24,11 +28,15 @@ services:
       - MYSQL_USER=ist
       - MYSQL_PASSWORD=ist
     volumes:
-      - ./percona/slave/config-file.cnf:/etc/mysql/conf.d/slave.cnf
+      - ./percona/slave/config-file.cnf:/etc/my.cnf.d/my.cnf
       - ./percona/slave/data/:/var/lib/mysql/
-
+    networks:
+      percona_net:
+        ipv4_address: 10.5.0.3
 networks:
   percona_net:
     driver: bridge
-    driver_opts:
-      com.docker.network.enable_ipv6: "false"
+    ipam:
+     config:
+      - subnet: 10.5.0.0/16
+        gateway: 10.5.0.1
