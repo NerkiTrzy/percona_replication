@@ -1,0 +1,6 @@
+USUWANIE:
+
+DELETE from mapping_with_index;
+DELETE from mapping_with_index_uniq_data;
+DELETE from mapping_without_pk;
+DELETE from mapping_with_pk;
