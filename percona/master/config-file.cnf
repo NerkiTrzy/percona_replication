@@ -3,4 +3,3 @@
 server-id=1
 binlog_format=ROW
 log-bin=master-bin
-binlog-do-db=db_replication

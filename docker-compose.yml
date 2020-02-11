@@ -25,9 +25,9 @@ services:
       - "8096:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=db_replication
       - MYSQL_REPLICATION_ROLE=slave
     volumes:
-      - ./percona/dump.sql:/docker-entrypoint-initdb.d/start-slave.sql
       - ./percona/slave/config-file.cnf:/etc/mysql/my.cnf
 #      - ./percona/slave/data/:/var/lib/mysql/
     networks:

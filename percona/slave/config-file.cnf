@@ -1,4 +1,3 @@
 # Config Settings:
 [mysqld]
 server-id=2
-replicate-do-db=db_replication

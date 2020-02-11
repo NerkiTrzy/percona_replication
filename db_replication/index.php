@@ -8,8 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-    <title>Hello, world!</title>
+    <title>DB Replication!</title>
 </head>
 <body>
 <div class="py-5 bg-light">
@@ -53,6 +52,11 @@
                         <td>SELECT COUNT(*) from mapping_with_index;</td>
                         <td data-count-key="mapping_with_index_master">0</td>
                         <td data-count-key="mapping_with_index_slave">0</td>
+                    </tr>
+                    <tr>
+                        <td>SELECT COUNT(*) from mapping_with_index_uniq_data;</td>
+                        <td data-count-key="mapping_with_index_uniq_data_master">0</td>
+                        <td data-count-key="mapping_with_index_uniq_data_slave">0</td>
                     </tr>
                     <tr>
                         <td>SELECT COUNT(*) from mapping_without_pk;</td>

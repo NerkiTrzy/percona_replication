@@ -2,8 +2,9 @@
 
 $queries = [
     'mapping_with_index_' => 'SELECT COUNT(*) from mapping_with_index;',
+    'mapping_with_index_uniq_data_' => 'SELECT COUNT(*) from mapping_with_index_uniq_data;',
     'mapping_without_pk_' => 'SELECT COUNT(*) from mapping_without_pk;',
-    'mapping_with_pk_' => 'SELECT COUNT(*) from mapping_with_pk;'
+    'mapping_with_pk_' => 'SELECT COUNT(*) from mapping_with_pk;',
 ];
 $result = [];
 
