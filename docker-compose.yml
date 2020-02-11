@@ -7,13 +7,14 @@ services:
       - "8095:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=test
+      - MYSQL_DATABASE=db_replication
       - MYSQL_REPLICATION_ROLE=master
       - MYSQL_USER=ist
       - MYSQL_PASSWORD=ist
     volumes:
+      - ./percona/dump.sql:/docker-entrypoint-initdb.d/dump.sql
       - ./percona/master/config-file.cnf:/etc/mysql/my.cnf
-      - ./percona/master/data/:/var/lib/mysql/
+#      - ./percona/master/data/:/var/lib/mysql/
     networks:
       percona_net:
         ipv4_address: 10.5.0.2
@@ -25,14 +26,46 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_REPLICATION_ROLE=slave
-      - MYSQL_USER=ist
-      - MYSQL_PASSWORD=ist
     volumes:
+      - ./percona/dump.sql:/docker-entrypoint-initdb.d/start-slave.sql
       - ./percona/slave/config-file.cnf:/etc/mysql/my.cnf
-      - ./percona/slave/data/:/var/lib/mysql/
+#      - ./percona/slave/data/:/var/lib/mysql/
     networks:
       percona_net:
         ipv4_address: 10.5.0.3
+  php:
+    image: docker-registry.lppdev.pl:5000/php_microservices:latest
+    container_name: replication_php
+    expose:
+      - "9000"
+      - "9090"
+    environment:
+      PHP_XDEBUG_ENABLED: 1
+      PHP_IDE_CONFIG: serverName=db-replication.devenv.lppdev.pl
+      XDEBUG_CONFIG: remote_connect_back=1 #remote_connect_back=1 jeśli chcesz debugować CLI zmień na: remote_host=10.0.34.XX
+      MAILCATCHER_PORT_1025_TCP_ADDR: 1025
+    volumes:
+      - ./db_replication:/var/www/db_replication
+      - ./php-fpm/xdebug.ini:/etc/php7/conf.d/xdebug.ini
+    links:
+      - db-slave
+      - db-master
+    networks:
+      percona_net:
+        ipv4_address: 10.5.0.4
+  nginx:
+    image: docker-registry.lppdev.pl:5000/magentoold_nginx
+    container_name: replication_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/db-replication.conf:/etc/nginx/conf.d/db-replication.conf
+    volumes_from:
+      - php:rw
+    networks:
+      percona_net:
+        ipv4_address: 10.5.0.5
 networks:
   percona_net:
     driver: bridge
